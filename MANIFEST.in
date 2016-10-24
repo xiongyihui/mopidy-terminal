@@ -6,4 +6,4 @@ include mopidy_terminal/ext.conf
 include tox.ini
 
 recursive-include tests *.py
-recursive-include mopidy_term/static *
+recursive-include mopidy_terminal/static *
