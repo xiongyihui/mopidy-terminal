@@ -17,7 +17,7 @@ window.onload = function() {
     document.getElementById("dummy-screen").setAttribute("style", "display: none");
 
     var protocol = (window.location.protocol.indexOf("https") === 0) ? "wss" : "ws";
-    var ws_url = protocol+"://"+window.location.host+"/term/websocket";
+    var ws_url = protocol+"://"+window.location.host+"/terminal/websocket";
     console.log(ws_url);
     function calculate_size(element) {
         var rows = Math.max(2, Math.floor((element.innerHeight - 10)/termRowHeight));
