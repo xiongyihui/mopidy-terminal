@@ -6,18 +6,9 @@ import os
 from mopidy import config, ext
 
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
-# TODO: If you need to log, use loggers named after the current Python module
 logger = logging.getLogger(__name__)
-
-
-def make_term_factory(config, core):
-    from terminado import TermSocket, UniqueTermManager
-    term_manager = UniqueTermManager(shell_command=['sh'])
-    return [
-        ("/websocket", TermSocket, {'term_manager': term_manager}),
-    ]
 
 
 class Extension(ext.Extension):
@@ -39,5 +30,17 @@ class Extension(ext.Extension):
 
         registry.add('http:app', {
             'name': self.ext_name,
-            'factory': make_term_factory,
+            'factory': self.factory,
         })
+
+    def factory(self, config, core):
+        from terminado import TermSocket, UniqueTermManager
+
+        class WebSocketHandler(TermSocket):
+            def check_origin(self, origin=None):
+                return True
+
+        term_manager = UniqueTermManager(shell_command=['ssh', 'localhost'])
+        return [
+            ("/websocket", WebSocketHandler, {'term_manager': term_manager}),
+        ]
